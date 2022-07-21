@@ -14,7 +14,7 @@ exports.up = function (knex) {
     books.string("publisher", 50).notNullable();
     books.integer("pageCount", 2000).notNullable();
     books.integer("readCount", 2000).notNullable();
-    books.boolean("reading").defaultTo(false);
+    books.boolean("reading");
     books.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };
