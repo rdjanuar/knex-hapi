@@ -1,7 +1,6 @@
 const { genSalt, hash, compare } = require("bcrypt");
 const knex = require("./knex");
 const JWT = require("jsonwebtoken");
-const cookie_options = require("./utils/helper");
 
 const getAllbooks = async (request, h) => {
   const getBooks = await knex("buku").then((result) => {
@@ -16,7 +15,6 @@ const getAllbooks = async (request, h) => {
             message: `Buku dengan nama ${request.query.name} tidak ditemukan`,
           })
           .code(404);
-        response.header("Authorization", request.headers.authorization);
         return response;
       }
       const response = h
@@ -27,7 +25,6 @@ const getAllbooks = async (request, h) => {
           },
         })
         .code(200);
-      response.header("Authorization", request.headers.authorization);
       return response;
     }
     if (!result || result.length === 0) {
@@ -37,7 +34,6 @@ const getAllbooks = async (request, h) => {
           errMessage: "buku tidak ditemukan",
         })
         .code(404);
-      response.header("Authorization", request.headers.authorization);
       return response;
     }
     const response = h
@@ -50,7 +46,6 @@ const getAllbooks = async (request, h) => {
         },
       })
       .code(200);
-    response.header("Authorization", request.headers.authorization);
     return response;
   });
   return getBooks;
@@ -257,8 +252,7 @@ const loginUser = async (request, h) => {
           },
         })
         .code(200)
-        .header("Authorization", `Bearer ${token}`)
-        .state("token", token, cookie_options);
+        .header("Authorization", `Bearer ${token}`);
       return response;
     })
     .catch(() => {

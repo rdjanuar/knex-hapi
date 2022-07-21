@@ -5,8 +5,7 @@ const validasi = async (request, decoded) => {
     .returning("*")
     .then(async (result) => {
       const finduser = result.filter(({ id }) => id === request.id);
-      const req = request.id;
-      if (req.id !== decoded.id) {
+      if (!finduser) {
         return { isValid: false };
       }
       return { isValid: true, credentials: finduser };
